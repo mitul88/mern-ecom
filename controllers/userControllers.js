@@ -17,7 +17,7 @@ module.exports.signUp = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
     // if user gets signed in right away, token has to be generated
-    const toke = user.generateJWT();
+    const token  = user.generateJWT();
     try{
         result = await user.save();
         return res.status(201).send({
