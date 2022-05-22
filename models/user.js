@@ -28,7 +28,7 @@ const userSchema = Schema({
         enum: ['user', 'admin'],
         default: 'user',
     }
-}, { timestamps: ture });
+}, { timestamps: true });
 
 userSchema.methods.generateJWT = function() {
     const token = jwt.sign({
