@@ -1,12 +1,10 @@
 const bcrypt = require('bcrypt');
-const req = require('express/lib/request');
-const res = require('express/lib/response');
 const _ = require('lodash');
-const { token } = require('morgan');
 const { User, validate } = require('../models/user');
 
 
 module.exports.signUp = async (req, res) => {
+    console.log(req.body)
     const {error} = validate(req.body);
     if(error) return res.status(400).send(error.details[0]);    
 
@@ -20,6 +18,7 @@ module.exports.signUp = async (req, res) => {
     user.password = await bcrypt.hash(user.password, salt);
     // if user gets signed in right away, token has to be generated
     const token  = user.generateJWT();
+
     try{
         const result = await user.save();
         return res.status(201).send({
