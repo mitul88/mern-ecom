@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt');
+const req = require('express/lib/request');
+const res = require('express/lib/response');
 const _ = require('lodash');
 const { token } = require('morgan');
 const { User, validate } = require('../models/user');
@@ -21,7 +23,7 @@ module.exports.signUp = async (req, res) => {
     try{
         const result = await user.save();
         return res.status(201).send({
-            message: "Registration Successfull!",
+            message: "Registration Successfull !",
             token: token,
             user:_.pick(result, ["_id", "name", "email"])
         })
@@ -30,6 +32,18 @@ module.exports.signUp = async (req, res) => {
     }
 }
 
-module.exports.signIn = async () => {
+module.exports.signIn = async (req, res) => {
+    let user = await User.findOne({ email: req.body.email });
+    if(!user) return res.status(400).send("User not found");
+
+    const validUser = await bcrypt.compare(req.body.password, user.password);
+    if(!validUser) return res.status(400).send("Please enter correct password");
+    
+    const token = user.generateJWT();
+    return res.status(200).send({
+        message: "Sign in Successfull !",
+        token: token,
+        user:_.pick(user, ["_id", "name", "email"])
+    })
 
 }
