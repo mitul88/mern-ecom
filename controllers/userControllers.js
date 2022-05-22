@@ -19,7 +19,7 @@ module.exports.signUp = async (req, res) => {
     // if user gets signed in right away, token has to be generated
     const token  = user.generateJWT();
     try{
-        result = await user.save();
+        const result = await user.save();
         return res.status(201).send({
             message: "Registration Successfull!",
             token: token,
