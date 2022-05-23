@@ -1,9 +1,11 @@
+require('express-async-errors');
 const express = require('express');
 const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
 
 const userRouter = require('./routers/userRouter');
+const error = require('./middlewares/error');
 
 app.use(express.json());
 app.use(cors());
@@ -14,5 +16,7 @@ if(process.env.NODE_ENV==='development') {
 
 app.use('/api/user', userRouter);
 
+// The express-aync-error needs to placed after router i.e. userRouter middleware. since userRouter does'nt have any next func
+app.use(error)
 
 module.exports= app;

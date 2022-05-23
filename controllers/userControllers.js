@@ -4,7 +4,6 @@ const { User, validate } = require('../models/user');
 
 
 module.exports.signUp = async (req, res) => {
-    console.log(req.body)
     const {error} = validate(req.body);
     if(error) return res.status(400).send(error.details[0]);    
 
@@ -19,16 +18,13 @@ module.exports.signUp = async (req, res) => {
     // if user gets signed in right away, token has to be generated
     const token  = user.generateJWT();
 
-    try{
-        const result = await user.save();
-        return res.status(201).send({
-            message: "Registration Successfull !",
-            token: token,
-            user:_.pick(result, ["_id", "name", "email"])
-        })
-    } catch (error) {
-        return res.status(500).send("Internal Server Error!")
-    }
+    const result = await user.save();
+    return res.status(201).send({
+        message: "Registration Successfull !",
+        token: token,
+        user:_.pick(result, ["_id", "name", "email"])
+    })
+   
 }
 
 module.exports.signIn = async (req, res) => {
