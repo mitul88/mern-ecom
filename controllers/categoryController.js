@@ -18,6 +18,7 @@ module.exports.createCategory = async (req, res) => {
 
 module.exports.getCategories = async (req, res) => {
     const categories = await Category.find()
+        .select({ _id: 1, name: 1 })
         .sort({ name: 1 });
         return res.status(200).send(categories);
 }
