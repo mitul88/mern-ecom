@@ -11,7 +11,7 @@ module.exports.Category = model('Category', Schema({
 
 module.exports.validate = category => {
     const schema = Joi.object({
-        name: join.string().min(3).max(50).required()
+        name: Joi.string().min(3).max(50).required()
     });
     return schema.validate(category);
 }
