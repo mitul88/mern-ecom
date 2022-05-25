@@ -14,6 +14,6 @@ module.exports.getProductById = async (req, res) => {
 
 }
 
-module.exports.updateProduct = async (req, res) => {
+module.exports.updateProductById = async (req, res) => {
 
 }
