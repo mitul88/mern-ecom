@@ -40,7 +40,10 @@ module.exports.getProducts = async (req, res) => {
     let sortBy = req.query.sortBy ? req.query.sortBy : 'createdAt';
     let limit = req.query.limit ? parseInt(req.query.limit) : 10;
 
-    const products = await Product.find();
+    const products = await Product.find()
+        .select({photo: 0, description:0})
+        .sort({ [sortBy]: order })
+        .limit(limit);
     return res.status(200).send(products);
 }
 
