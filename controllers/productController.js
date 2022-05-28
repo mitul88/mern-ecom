@@ -66,5 +66,36 @@ module.exports.getPhoto = async (req, res) => {
 }
 
 module.exports.updateProductById = async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+
+    let form = new formidable.IncomingForm();
+    form.keepExtensions = true;
+    form.parse(req, (err, fields, files)=> {
+        if (err) return res.status(400).send("Something Worng!");
+        const updatedFields = _.pick(fields, ['name', 'description', 'price', 'category', 'quantity']);
+        _.assignIn(product, updatedFields);
+
+        if(files.photo) {
+            fs.readFile(files.photo.filepath, (err, data)=> {
+                if(err) return res.status(400).send("Something went wrong!");
+                product.photo.data = data;
+                product.photo.contentType = files.photo.mimetype;
+                product.save((err, result) => {
+                    if (err) return res.status(500).send("Something failed!");
+                    else return res.status(200).send({
+                        message: "Product updated successfully!!"
+                    })
+                })
+            })
+        } else {
+            product.save((err, result) => {
+                if (err) return res.status(500).send("Something failed!");
+                else return res.status(200).send({
+                    message: "Product updated successfully!!"
+                })
+            })
+        }
+    })
 
 }
