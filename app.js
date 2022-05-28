@@ -1,20 +1,14 @@
 const express = require('express');
 require('express-async-errors');
 const app = express();
-const cors = require('cors');
-const morgan = require('morgan');
 
 const userRouter = require('./routers/userRouter');
 const categoryRouter = require('./routers/categoryRouter');
 const productRouter = require('./routers/productRouter');
+
 const error = require('./middlewares/error');
 
-app.use(express.json());
-app.use(cors());
-
-if(process.env.NODE_ENV==='development') {
-    app.use(morgan('dev'));
-}
+require('./middlewares')(app);
 
 app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
