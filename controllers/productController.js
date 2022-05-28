@@ -1,4 +1,4 @@
-const_ = require('lodash');
+const _ = require('lodash');
 const formidable = require('formidable');
 const fs = require('fs');
 const { Product, validate } = require('../models/product');
@@ -10,15 +10,15 @@ module.exports.createProduct = async (req, res) => {
     form.parse(req, (err, fields, files)=>{
         if(err) return res.status(400).send("There has been an error");
         const {error} = validate(_.pick(fields, ["name", "description", "price", "category", "quantity"]));
-        if(error) return req.send(400).send(error.details[0].message);
+        if(error) return res.status(400).send(error.details[0].message);
 
         const product = new Product(fields);
 
         if(files.photo) {
-            fs.readFile(files.photo.path, (err, data) => {
+            fs.readFile( files.photo.filepath, (err, data) => {
                 if(err) return res.status(400).send("Problem with file data !!");
                 product.photo.data = data;
-                product.photo.contentType = files.photo.type;
+                product.photo.contentType = files.photo.mimetype; 
                 product.save((err, result)=>{
                     if(err) res.status(500).send("Internal Server Error");
                     else return res.status(201).send({

@@ -21,7 +21,7 @@ module.exports.Product = model('Product', Schema({
 module.exports.validate = product => {
     const schema = Joi.object({
         name: Joi.string().min(3).max(255).required(),
-        description: Joi.string().min().max(2000).required(),
+        description: Joi.string().min(3).max(2000).required(),
         price: Joi.number().required(),
         quantity: Joi.number().required(),
         category: Joi.string().required(),
