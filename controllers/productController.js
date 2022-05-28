@@ -99,3 +99,7 @@ module.exports.updateProductById = async (req, res) => {
     })
 
 }
+
+module.exports.filterProducts = async (req, res) => {
+
+}

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { createProduct, getProducts, getProductById, getPhoto, updateProductById } = require('../controllers/productController');
+const { createProduct, getProducts, getProductById, getPhoto, updateProductById, filterProducts } = require('../controllers/productController');
 const admin = require('../middlewares/admin');
 const authorize = require('../middlewares/authorize');
 
@@ -13,5 +13,8 @@ router.route('/:id')
 
 router.route('/photo/:id')
     .get(getPhoto);
+
+router.route('/filter')
+    .post(filterProducts);
 
 module.exports = router;
