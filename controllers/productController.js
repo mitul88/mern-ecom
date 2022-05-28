@@ -2,6 +2,7 @@ const _ = require('lodash');
 const formidable = require('formidable');
 const fs = require('fs');
 const { Product, validate } = require('../models/product');
+const { query } = require('express');
 
 
 module.exports.createProduct = async (req, res) => {
@@ -34,6 +35,11 @@ module.exports.createProduct = async (req, res) => {
 }
 
 module.exports.getProducts = async (req, res) => {
+
+    let order = req.query.order === 'desc'? -1 : 1;
+    let sortBy = req.query.sortBy ? req.query.sortBy : 'createdAt';
+    let limit = req.query.limit ? parseInt(req.query.limit) : 10;
+
     const products = await Product.find();
     return res.status(200).send(products);
 }
