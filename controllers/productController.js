@@ -51,7 +51,7 @@ module.exports.getProductById = async (req, res) => {
     const productId = req.params.id;
     const product = await Product.findById(productId)
                         .select({ photo: 0 })
-                        .populate('category', name);
+                        .populate('category', 'name');
     
     if(!product) return res.status(404).send("Product not found!!");
     return res.status(200).send(product);
@@ -59,10 +59,10 @@ module.exports.getProductById = async (req, res) => {
 
 module.exports.getPhoto = async (req, res) => {
     const productId = req.params.id;
-    const product = await Product(productId)
-            .select({ photo: 1, _id: 0 })
+    const product = await Product.findById(productId)
+            .select({ photo: 1, _id: 0 });
     res.set('Content-Type', product.photo.contentType);
-    return res.status(200).send((product.photo.data));
+    return res.status(200).send(product.photo.data);
 }
 
 module.exports.updateProductById = async (req, res) => {
