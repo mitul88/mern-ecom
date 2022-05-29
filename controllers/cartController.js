@@ -22,7 +22,13 @@ module.exports.createCartItem = async (req, res) => {
 }
 
 module.exports.getCartItem = async (req, res) => {
+    const cartItems = await CartItem.find({
+        user: req.user._id
+    })
+    .populate('product', 'name')
+    .populate('user', 'name')
 
+    return res.status(200).send(cartItems);
 }
 
 module.exports.updateCartItem = async (req, res) => {
