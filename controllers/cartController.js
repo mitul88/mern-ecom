@@ -39,5 +39,8 @@ module.exports.updateCartItem = async (req, res) => {
 }
 
 module.exports.deleteCartItem = async (req, res) => {
-
+    const _id = req.params.id;
+    userId = req.user._id;
+    await CartItem.deleteOne({ _id: _id, user: userId });
+    return res.status(200).send("item deleted!!");
 }
